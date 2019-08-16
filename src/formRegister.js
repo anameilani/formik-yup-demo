@@ -9,44 +9,39 @@ function FormRegister(){
     const [username, setUsername]= useState('')
     const [password, setPassword]= useState('')
     const [confirmPassword, setConfirmPassword]= useState('')
-    const [errorPassword, setErrorPassword]= useState(null)
+    const [errorUpper, setErrorUpper]= useState(null)
+    const [errorLower, setErrorLower]= useState(null)
+    const [errorSpecial, setErrorSpecial]= useState(null)
+    const [errorNumber, setErrorNumber]= useState(null)
+    const [errorLength, setErrorLength]= useState(null)
     const [errorConfirmPass, setErrorConfirmPass]= useState(null)
     const [allValid, setAllValid]= useState(false)
 
     const changePassword= (e) =>{
-        let input= e.target.value
 
+        let input= e.target.value
         let upperCaseValidation = new RegExp("^(?=.*[A-Z])")
         let lowerCaseValidation = new RegExp("^(?=.*[a-z])")
         let specialCharValidation = new RegExp("^(?=.*[!@#\$%\^&\*])")
         let numberValidation = new RegExp("^(?=.*[0-9])")
         let lengthValidation = new RegExp("^(?=.{5,})")
 
-        if(lengthValidation.test(input)) {
-            console.log('masuk length')
-            setErrorPassword(null)
-        }
-        else {
-            console.log('masuk length')
-           
-            setErrorPassword('Password must be at least 6 characters')
-        }
 
-        if(!upperCaseValidation.test(input)) setErrorPassword('Password must be contain at least 1 uppercase')
-        else setErrorPassword(null)
+        if(!lengthValidation.test(input)) setErrorLength('Password must be contain at least 6 character')
+        else setErrorLength(null)
 
-        if(!lowerCaseValidation.test(input)) setErrorPassword('Password must be contain at least 1 lowercase')
-        else setErrorPassword(null)
+        if(!upperCaseValidation.test(input)) setErrorUpper('Password must be contain at least 1 uppercase')
+        else setErrorUpper(null)
+
+        if(!lowerCaseValidation.test(input)) setErrorLower('Password must be contain at least 1 lowercase')
+        else setErrorLower(null)
         
-        if(!specialCharValidation.test(input)) setErrorPassword('Password must be contain at least 1 special character')
-        else setErrorPassword(null)
+        if(!specialCharValidation.test(input)) setErrorSpecial('Password must be contain at least 1 special character')
+        else setErrorSpecial(null)
 
-        if(!numberValidation.test(input)) setPassword('Password must be contain at least 1 number')
-        else setErrorPassword(null)
+        if(!numberValidation.test(input)) setErrorNumber('Password must be contain at least 1 number')
+        else setErrorNumber(null)
 
-
-        console.log(input)
-        console.log(errorPassword)
         setPassword(input)
     }
 
@@ -65,7 +60,7 @@ function FormRegister(){
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if(allValid && errorPassword=== null && errorConfirmPass === null){
+        if(allValid && errorConfirmPass === null){
             let data=[{
                 'firstName': firstName,
                 'lastName': lastName,
@@ -87,7 +82,7 @@ function FormRegister(){
 
     return (
         <div style={{width: 500, marginTop: 20, marginLeft: '25%'}}>
-            <h4 className="title">Create New Account using Formik</h4>
+            <h4 className="title">Create New Account without Formik</h4>
             <Form onSubmit={handleSubmit} >
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridFirstName">
@@ -111,8 +106,11 @@ function FormRegister(){
                 <Form.Group controlId="formGridPassword">
                     <Form.Label className="label-text">Password :</Form.Label>
                     <Form.Control onChange={changePassword} type="password" placeholder="Password" required />
-                    <p className="invalid-text">{errorPassword}</p>
-
+                    <p className="invalid-text">{errorLength}</p>
+                    <p className="invalid-text">{errorUpper}</p>
+                    <p className="invalid-text">{errorLower}</p>
+                    <p className="invalid-text">{errorNumber}</p>
+                    <p className="invalid-text">{errorSpecial}</p>
                 </Form.Group>
                 <Form.Group controlId="formGridConfirmPassword">
                     <Form.Label className="label-text">Confirm Password :</Form.Label>
